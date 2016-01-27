@@ -623,7 +623,7 @@ API.prototype.buildTxFromPrivateKey = function(privateKey, destinationAddress, o
     function(utxos, next) {
       if (!_.isArray(utxos) || utxos.length == 0) return next(new Error('No utxos found'));
 
-      var fee = opts.fee || 10000;
+      var fee = opts.fee || 100000000;
       var amount = _.sum(utxos, 'satoshis') - fee;
       if (amount <= 0) return next(Errors.INSUFFICIENT_FUNDS);
 
@@ -2084,9 +2084,9 @@ module.exports = Constants;
 
 var Defaults = {};
 
-Defaults.DEFAULT_FEE_PER_KB = 10000;
+Defaults.DEFAULT_FEE_PER_KB = 100000000;
 Defaults.MIN_FEE_PER_KB = 0;
-Defaults.MAX_FEE_PER_KB = 1000000;
+Defaults.MAX_FEE_PER_KB = 100000000;
 Defaults.MAX_TX_FEE = 1 * 1e8;
 
 module.exports = Defaults;
@@ -14507,20 +14507,21 @@ function removeNetwork(network) {
 addNetwork({
   name: 'livenet',
   alias: 'mainnet',
-  pubkeyhash: 0x00,
+  pubkeyhash: 0x1e,
   privatekey: 0x80,
   scripthash: 0x05,
-  xpubkey: 0x0488b21e,
+  xpubkey:  0x0488b21e,
   xprivkey: 0x0488ade4,
-  networkMagic: 0xf9beb4d9,
-  port: 8333,
+  networkMagic: 0xfac3b6da,
+  port: 12024,
   dnsSeeds: [
-    'seed.bitcoin.sipa.be',
-    'dnsseed.bluematt.me',
-    'dnsseed.bitcoin.dashjr.org',
-    'seed.bitcoinstats.com',
-    'seed.bitnodes.io',
-    'bitseed.xf2.org'
+    '74.208.230.160',
+    '216.250.125.121',
+    '195.130.216.149',
+    '96.18.212.86',
+    '188.226.239.21',
+    '54.201.183.106',
+    '213.81.142.62'
   ]
 });
 
@@ -18961,7 +18962,7 @@ Transaction.NLOCKTIME_BLOCKHEIGHT_LIMIT = 5e8;
 Transaction.NLOCKTIME_MAX_VALUE = 4294967295;
 
 // Value used for fee estimation (satoshis per kilobyte)
-Transaction.FEE_PER_KB = 10000;
+Transaction.FEE_PER_KB = 100000000;
 
 // Safe upper bound for change address script size in bytes
 Transaction.CHANGE_OUTPUT_MAX_SIZE = 20 + 4 + 34 + 4;
@@ -20529,7 +20530,7 @@ URI.isValid = function(arg, knownParams) {
 URI.parse = function(uri) {
   var info = URL.parse(uri, true);
 
-  if (info.protocol !== 'bitcoin:') {
+  if (info.protocol !== 'digibyte:') {
     throw new TypeError('Invalid bitcoin URI');
   }
 
@@ -20624,7 +20625,7 @@ URI.prototype.toString = function() {
   _.extend(query, this.extras);
 
   return URL.format({
-    protocol: 'bitcoin:',
+    protocol: 'digibyte:',
     host: this.address,
     query: query
   });
